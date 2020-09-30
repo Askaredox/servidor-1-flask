@@ -4,8 +4,8 @@ import requests
 class Servicio:
     URL1 = 'http://192.168.1.6:80/api'
     URL2 = 'http://192.168.1.21:80/api'
-    #URL1 = 'http://3.137.171.98:80/api'
-    #URL2 = 'http://3.137.172.47:80/api'
+    #URL1 = 'http://3.138.36.190:80/api'
+    #URL2 = 'http://3.129.210.96:80/api'
 
     @staticmethod
     def send_data(autor, nota):
@@ -13,30 +13,31 @@ class Servicio:
         res = {}
         res1 = requests.get(Servicio.URL1+"/status")
         res2 = requests.get(Servicio.URL2+"/status")
+        print(str(res1))
         if res1.status_code != 200 and res2.status_code != 200:
             return {'id':-1}
         
         if res1.status_code == 200 and res2.status_code != 200:
-            res = requests.post(Servicio.URL1, json=data)
+            res = requests.post(Servicio.URL1+"/add", json=data)
         elif res2.status_code == 200 and res1.status_code != 200:
-            res = requests.post(Servicio.URL2, json=data)
+            res = requests.post(Servicio.URL2+"/add", json=data)
         else:
             cp1 = res1.json()
             cp2 = res2.json()
             if cp2['len'] < cp1['len']:
-                res = requests.post(Servicio.URL2, json=data)
+                res = requests.post(Servicio.URL2+"/add", json=data)
             elif cp1['len'] < cp2['len']:
-                res = requests.post(Servicio.URL1, json=data)
+                res = requests.post(Servicio.URL1+"/add", json=data)
             else:
                 if cp2['ram'] < cp1['ram']:
-                    res = requests.post(Servicio.URL2, json=data)
+                    res = requests.post(Servicio.URL2+"/add", json=data)
                 elif cp1['ram'] < cp2['ram']:
-                    res = requests.post(Servicio.URL1, json=data)
+                    res = requests.post(Servicio.URL1+"/add", json=data)
                 else:
                     if cp2['cpu'] <= cp1['cpu']:
-                        res = requests.post(Servicio.URL2, json=data)
+                        res = requests.post(Servicio.URL2+"/add", json=data)
                     else:
-                        res = requests.post(Servicio.URL1, json=data)
+                        res = requests.post(Servicio.URL1+"/add", json=data)
         body = res.json()
         return body
 

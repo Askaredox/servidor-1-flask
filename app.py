@@ -1,6 +1,7 @@
 from flask import Flask, request
 from flask_cors import CORS
 from servicio import Servicio
+import json
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origin": "*"}})
@@ -16,7 +17,9 @@ def add():
         content = request.get_json()
         autor = content['autor']
         nota = content['nota']
-        return Servicio.send_data(autor, nota)
+
+        ret = Servicio.send_data(autor, nota)
+        return json.dumps(ret)
         
 
 
