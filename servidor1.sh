@@ -21,9 +21,10 @@ sudo apt install -y git
 
 # preparar
 git clone https://github.com/Askaredox/servidor-1-flask.git
-cd servidor-1-react
+cd servidor-1-flask
 sudo docker-compose -f "docker-compose.yaml" up -d --build
-echo Done!
+sudo docker ps
+echo Ready!
 
 # Extras
 
