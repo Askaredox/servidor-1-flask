@@ -4,21 +4,25 @@ import requests
 class Servicio:
     URL1 = 'http://192.168.1.6:80/api'
     URL2 = 'http://192.168.1.21:80/api'
+    #URL1 = 'http://3.137.171.98:80/api'
+    #URL2 = 'http://3.137.172.47:80/api'
 
     @staticmethod
     def send_data(autor, nota):
         data = Servicio.objectify(autor, nota)
         res = {}
-        cp1 = requests.get(Servicio.URL1+"/status")
-        cp2 = requests.get(Servicio.URL2+"/status")
-        if cp1.status_code != 200 and cp2.status_code != 200:
+        res1 = requests.get(Servicio.URL1+"/status")
+        res2 = requests.get(Servicio.URL2+"/status")
+        if res1.status_code != 200 and res2.status_code != 200:
             return {'id':-1}
         
-        if cp1.status_code == 200 and cp2.status_code != 200:
+        if res1.status_code == 200 and res2.status_code != 200:
             res = requests.post(Servicio.URL1, json=data)
-        elif cp2.status_code == 200 and cp1.status_code != 200:
+        elif res2.status_code == 200 and res1.status_code != 200:
             res = requests.post(Servicio.URL2, json=data)
         else:
+            cp1 = res1.json()
+            cp2 = res2.json()
             if cp2['len'] < cp1['len']:
                 res = requests.post(Servicio.URL2, json=data)
             elif cp1['len'] < cp2['len']:
