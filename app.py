@@ -10,7 +10,7 @@ cors = CORS(app, resources={r"/api/*": {"origin": "*"}})
 def check():
     return "Todo good"
 
-@app.route('/api/add', method=['POST'])
+@app.route('/api/add', methods=['POST'])
 def add():
     if request.method == 'POST':
         content = request.get_json()
